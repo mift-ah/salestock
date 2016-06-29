@@ -103,14 +103,224 @@ public class TC02Home extends TC01Opening {
 		driver.get(baseUrl + "index.php?controller=authentication&back=my-account");
 		driver.findElement(By.id("email_create")).clear();
 	    driver.findElement(By.id("email_create")).sendKeys("bukan alamat email");
+	    driver.findElement(By.id("SubmitCreate")).click();
 		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("Invalid email address."));
 	}
 	@Test
-	//verifikasi memasukkan email yang salah di kolom create an account
+	//verifikasi menuju halaman create an account
+	/*karena halaman create account tidak bisa direfresh, maka test case ini jadi opening untuk tescase berikutnya.
+	Jika testcase ini failed, maka dipastikan semua testcase create account akan failed juga*/
 	public void TC02012ClickCreateAnAccount() {
 		driver.get(baseUrl + "index.php?controller=authentication&back=my-account");
 		driver.findElement(By.id("email_create")).clear();
 	    driver.findElement(By.id("email_create")).sendKeys("alamat@email.com");
+	    driver.findElement(By.id("SubmitCreate")).click();
 		Assert.assertEquals(driver.getCurrentUrl(), baseUrl + "index.php?controller=authentication#account-creation");
 	}
+	@Test
+	//verifikasi UI halaman create an account
+	public void TC02013UICreateAnAccount() {
+		Assert.assertEquals(driver.getCurrentUrl(), baseUrl + "index.php?controller=authentication#account-creation");
+		Assert.assertTrue(driver.findElement(By.xpath("//h1")).getText().contains("CREATE AN ACCOUNT"));
+	}
+	@Test
+	//Verifikasi error ketika belum mengisi nama depan
+	public void TC02014RegisterNoFName() {
+		driver.findElement(By.id("customer_firstname")).clear();
+		driver.findElement(By.id("customer_lastname")).clear();
+	    driver.findElement(By.id("customer_lastname")).sendKeys("belakang");
+		driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("alamat@email.com");
+		driver.findElement(By.id("passwd")).clear();
+	    driver.findElement(By.id("passwd")).sendKeys("password");
+		driver.findElement(By.id("address1")).clear();
+	    driver.findElement(By.id("address1")).sendKeys("alamat");
+		driver.findElement(By.id("city")).clear();
+	    driver.findElement(By.id("city")).sendKeys("kota");
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+	    driver.findElement(By.id("postcode")).sendKeys("12345");
+		driver.findElement(By.id("phone_mobile")).clear();
+	    driver.findElement(By.id("phone_mobile")).sendKeys("012345678");
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("firstname is required."));
+	}
+	@Test
+	//Verifikasi error ketika belum mengisi nama belakang
+	public void TC02014RegisterNoLName() {
+		driver.findElement(By.id("customer_firstname")).clear();
+	    driver.findElement(By.id("customer_firstname")).sendKeys("depan");
+		driver.findElement(By.id("customer_lastname")).clear();
+		driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("alamat@email.com");
+		driver.findElement(By.id("passwd")).clear();
+	    driver.findElement(By.id("passwd")).sendKeys("password");
+		driver.findElement(By.id("address1")).clear();
+	    driver.findElement(By.id("address1")).sendKeys("alamat");
+		driver.findElement(By.id("city")).clear();
+	    driver.findElement(By.id("city")).sendKeys("kota");
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+	    driver.findElement(By.id("postcode")).sendKeys("12345");
+		driver.findElement(By.id("phone_mobile")).clear();
+	    driver.findElement(By.id("phone_mobile")).sendKeys("012345678");
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("lastname is required."));
+	}		
+	@Test
+	//Verifikasi error ketika belum mengisi email
+	public void TC02014RegisterNoEmail() {
+		driver.findElement(By.id("customer_firstname")).clear();
+	    driver.findElement(By.id("customer_firstname")).sendKeys("depan");
+		driver.findElement(By.id("customer_lastname")).clear();
+	    driver.findElement(By.id("customer_lastname")).sendKeys("belakang");
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("passwd")).clear();
+	    driver.findElement(By.id("passwd")).sendKeys("password");
+		driver.findElement(By.id("address1")).clear();
+	    driver.findElement(By.id("address1")).sendKeys("alamat");
+		driver.findElement(By.id("city")).clear();
+	    driver.findElement(By.id("city")).sendKeys("kota");
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+	    driver.findElement(By.id("postcode")).sendKeys("12345");
+		driver.findElement(By.id("phone_mobile")).clear();
+	    driver.findElement(By.id("phone_mobile")).sendKeys("012345678");
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("email is required."));
+	}	
+	@Test
+	//Verifikasi error ketika belum mengisi password
+	public void TC02014RegisterNoPass() {
+		driver.findElement(By.id("customer_firstname")).clear();
+	    driver.findElement(By.id("customer_firstname")).sendKeys("depan");
+		driver.findElement(By.id("customer_lastname")).clear();
+	    driver.findElement(By.id("customer_lastname")).sendKeys("belakang");
+		driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("alamat@email.com");
+		driver.findElement(By.id("passwd")).clear();
+		driver.findElement(By.id("address1")).clear();
+	    driver.findElement(By.id("address1")).sendKeys("alamat");
+		driver.findElement(By.id("city")).clear();
+	    driver.findElement(By.id("city")).sendKeys("kota");
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+	    driver.findElement(By.id("postcode")).sendKeys("12345");
+		driver.findElement(By.id("phone_mobile")).clear();
+	    driver.findElement(By.id("phone_mobile")).sendKeys("012345678");
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("passwd is required."));
+	}	
+	@Test
+	//Verifikasi error ketika belum mengisi alamat
+	public void TC02014RegisterNoAddress() {
+		driver.findElement(By.id("customer_firstname")).clear();
+	    driver.findElement(By.id("customer_firstname")).sendKeys("depan");
+		driver.findElement(By.id("customer_lastname")).clear();
+	    driver.findElement(By.id("customer_lastname")).sendKeys("belakang");
+		driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("alamat@email.com");
+		driver.findElement(By.id("passwd")).clear();
+	    driver.findElement(By.id("passwd")).sendKeys("password");
+		driver.findElement(By.id("address1")).clear();
+		driver.findElement(By.id("city")).clear();
+	    driver.findElement(By.id("city")).sendKeys("kota");
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+	    driver.findElement(By.id("postcode")).sendKeys("12345");
+		driver.findElement(By.id("phone_mobile")).clear();
+	    driver.findElement(By.id("phone_mobile")).sendKeys("012345678");
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("address1 is required."));
+	}	
+	@Test
+	//Verifikasi error ketika belum mengisi kota
+	public void TC02014RegisterNoCity() {
+		driver.findElement(By.id("customer_firstname")).clear();
+	    driver.findElement(By.id("customer_firstname")).sendKeys("depan");
+		driver.findElement(By.id("customer_lastname")).clear();
+	    driver.findElement(By.id("customer_lastname")).sendKeys("belakang");
+		driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("alamat@email.com");
+		driver.findElement(By.id("passwd")).clear();
+	    driver.findElement(By.id("passwd")).sendKeys("password");
+		driver.findElement(By.id("address1")).clear();
+	    driver.findElement(By.id("address1")).sendKeys("alamat");
+		driver.findElement(By.id("city")).clear();
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+	    driver.findElement(By.id("postcode")).sendKeys("12345");
+		driver.findElement(By.id("phone_mobile")).clear();
+	    driver.findElement(By.id("phone_mobile")).sendKeys("012345678");
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("city is required."));
+	}	
+	@Test
+	//Verifikasi error ketika belum mengisi kodepost
+	public void TC02014RegisterNoPostcode() {
+		driver.findElement(By.id("customer_firstname")).clear();
+	    driver.findElement(By.id("customer_firstname")).sendKeys("depan");
+		driver.findElement(By.id("customer_lastname")).clear();
+	    driver.findElement(By.id("customer_lastname")).sendKeys("belakang");
+		driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("alamat@email.com");
+		driver.findElement(By.id("passwd")).clear();
+	    driver.findElement(By.id("passwd")).sendKeys("password");
+		driver.findElement(By.id("address1")).clear();
+	    driver.findElement(By.id("address1")).sendKeys("alamat");
+		driver.findElement(By.id("city")).clear();
+	    driver.findElement(By.id("city")).sendKeys("kota");
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+		driver.findElement(By.id("phone_mobile")).clear();
+	    driver.findElement(By.id("phone_mobile")).sendKeys("012345678");
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("The Zip/Postal code you've entered is invalid. It must follow this format: 00000"));
+	}	
+	@Test
+	//Verifikasi error ketika belum mengisi nomor telepon
+	public void TC02014RegisterNoPhone() {
+		driver.findElement(By.id("customer_firstname")).clear();
+	    driver.findElement(By.id("customer_firstname")).sendKeys("depan");
+		driver.findElement(By.id("customer_lastname")).clear();
+	    driver.findElement(By.id("customer_lastname")).sendKeys("belakang");
+		driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("alamat@email.com");
+		driver.findElement(By.id("passwd")).clear();
+	    driver.findElement(By.id("passwd")).sendKeys("password");
+		driver.findElement(By.id("address1")).clear();
+	    driver.findElement(By.id("address1")).sendKeys("alamat");
+		driver.findElement(By.id("city")).clear();
+	    driver.findElement(By.id("city")).sendKeys("kota");
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+	    driver.findElement(By.id("postcode")).sendKeys("12345");
+		driver.findElement(By.id("phone_mobile")).clear();
+		driver.findElement(By.id("phone")).clear();
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//ol")).getText().contains("You must register at least one phone number."));
+	}
+	public void TC02015SuccessRegister() {
+		driver.findElement(By.id("customer_firstname")).clear();
+	    driver.findElement(By.id("customer_firstname")).sendKeys("depan");
+		driver.findElement(By.id("customer_lastname")).clear();
+	    driver.findElement(By.id("customer_lastname")).sendKeys("belakang");
+		driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("alamat@email.com");
+		driver.findElement(By.id("passwd")).clear();
+	    driver.findElement(By.id("passwd")).sendKeys("password");
+		driver.findElement(By.id("address1")).clear();
+	    driver.findElement(By.id("address1")).sendKeys("alamat");
+		driver.findElement(By.id("city")).clear();
+	    driver.findElement(By.id("city")).sendKeys("kota");
+		new Select(driver.findElement(By.id("id_state"))).selectByVisibleText("Alaska");
+		driver.findElement(By.id("postcode")).clear();
+	    driver.findElement(By.id("postcode")).sendKeys("12345");
+		driver.findElement(By.id("phone_mobile")).clear();
+	    driver.findElement(By.id("phone_mobile")).sendKeys("012345678");
+		driver.findElement(By.id("phone")).clear();
+	    driver.findElement(By.id("submitAccount")).click();
+		Assert.assertEquals(driver.getCurrentUrl(), baseUrl + "index.php?controller=my-account");
+		}
+	
 }

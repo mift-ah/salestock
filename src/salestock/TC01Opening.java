@@ -1,7 +1,6 @@
 package salestock;
 /*
-Automation ini dibuat dengan bahasa JAVA menggunakan plugin TestNG for Eclipse.
-This automation were created with JAVA language using TestNG for Eclipse.
+Automation ini dibuat dengan bahasa JAVA menggunakan selenium webdriver dan plugin TestNG for Eclipse.
 by Miftah Fauzi
 */
 
